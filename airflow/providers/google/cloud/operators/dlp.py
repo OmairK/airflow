@@ -269,6 +269,10 @@ class CloudDLPCreateInspectTemplateOperator(BaseOperator):
     Creates an InspectTemplate for re-using frequently used configuration for
     inspecting content, images, and storage.
 
+    .. seealso::
+        For more information on how to use this operator, take a look at the guide:
+        :ref:`howto/operator:CloudDLPCreateInspectTemplateOperator`
+
     :param organization_id: (Optional) The organization ID. Required to set this
         field if parent resource is an organization.
     :type organization_id: str
@@ -729,6 +733,10 @@ class CloudDLPDeleteDLPJobOperator(BaseOperator):
 class CloudDLPDeleteInspectTemplateOperator(BaseOperator):
     """
     Deletes an InspectTemplate.
+
+    .. seealso::
+        For more information on how to use this operator, take a look at the guide:
+        :ref:`howto/operator:CloudDLPDeleteInspectTemplateOperator`
 
     :param template_id: The ID of the inspect template to be deleted.
     :type template_id: str
@@ -1237,6 +1245,10 @@ class CloudDLPInspectContentOperator(BaseOperator):
     """
     Finds potentially sensitive info in content. This method has limits on
     input size, processing time, and output size.
+
+    .. seealso::
+        For more information on how to use this operator, take a look at the guide:
+        :ref:`howto/operator:CloudDLPInspectContentOperator`
 
     :param project_id: (Optional) Google Cloud Platform project ID where the
         DLP Instance exists. If set to None or missing, the default

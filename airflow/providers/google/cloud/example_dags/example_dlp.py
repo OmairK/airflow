@@ -57,7 +57,7 @@ with models.DAG(
     default_args=default_args,
     schedule_interval=None,  # Override to match your needs
     tags=['example'],
-) as dag:
+) as dag:  # [START howto_operator_dlp_create_inspect_template]
     create_template = CloudDLPCreateInspectTemplateOperator(
         project_id=GCP_PROJECT,
         inspect_template=INSPECT_TEMPLATE,
@@ -66,7 +66,9 @@ with models.DAG(
         do_xcom_push=True,
         dag=dag,
     )
+    # [END howto_operator_dlp_create_inspect_template]
 
+    # [START howto_operator_dlp_use_inspect_template]
     inspect_content = CloudDLPInspectContentOperator(
         task_id="inpsect_content",
         project_id=GCP_PROJECT,
@@ -74,12 +76,15 @@ with models.DAG(
         inspect_template_name="{{ task_instance.xcom_pull('create_template', key='return_value')['name'] }}",
         dag=dag,
     )
+    # [END howto_operator_dlp_use_inspect_template]
 
+    # [START howto_operator_dlp_delete_inspect_template]
     delete_template = CloudDLPDeleteInspectTemplateOperator(
         task_id="delete_template",
         template_id=TEMPLATE_ID,
         project_id=GCP_PROJECT,
         dag=dag,
     )
+    # [END howto_operator_dlp_delete_inspect_template]
 
     create_template >> inspect_content >> delete_template
