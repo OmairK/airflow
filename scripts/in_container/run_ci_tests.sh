@@ -33,7 +33,7 @@ if [[ "${RES}" == "0" && ${CI:="false"} == "true" ]]; then
     cp .coverage /files
 fi
 
-MAIN_GITHUB_REPOSITORY="apache/airflow"
+readonly MAIN_GITHUB_REPOSITORY='apache/airflow'
 
 if [[ ${ONLY_RUN_QUARANTINED_TESTS:=} = "true" ]]; then
     if [[ ${GITHUB_REPOSITORY} == "${MAIN_GITHUB_REPOSITORY}" ]]; then
