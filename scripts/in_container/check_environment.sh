@@ -23,7 +23,7 @@ EXIT_CODE=0
 
 DISABLED_INTEGRATIONS=""
 
-function check_service {
+function check_environment::check_service {
     INTEGRATION_NAME=$1
     CALL=$2
     MAX_CHECK=${3:=1}
@@ -60,7 +60,7 @@ function check_service {
     fi
 }
 
-function check_integration {
+function check_environment::check_integration {
     INTEGRATION_NAME=$1
 
     ENV_VAR_NAME=INTEGRATION_${INTEGRATION_NAME^^}
@@ -68,16 +68,16 @@ function check_integration {
         DISABLED_INTEGRATIONS="${DISABLED_INTEGRATIONS} ${INTEGRATION_NAME}"
         return
     fi
-    check_service "${@}"
+    check_environment::check_service "${@}"
 }
 
-function check_db_backend {
+function check_environment::check_db_backend {
     MAX_CHECK=${1:=1}
 
     if [[ ${BACKEND} == "postgres" ]]; then
-        check_service "postgres" "nc -zvv postgres 5432" "${MAX_CHECK}"
+        check_environment::check_service "postgres" "nc -zvv postgres 5432" "${MAX_CHECK}"
     elif [[ ${BACKEND} == "mysql" ]]; then
-        check_service "mysql" "nc -zvv mysql 3306" "${MAX_CHECK}"
+        check_environment::check_service "mysql" "nc -zvv mysql 3306" "${MAX_CHECK}"
     elif [[ ${BACKEND} == "sqlite" ]]; then
         return
     else
@@ -86,7 +86,7 @@ function check_db_backend {
     fi
 }
 
-function resetdb_if_requested() {
+function check_environment::resetdb_if_requested() {
     if [[ ${DB_RESET:="false"} == "true" ]]; then
         if [[ ${RUN_AIRFLOW_1_10} == "true" ]]; then
             airflow resetdb -y
@@ -142,16 +142,16 @@ echo "==========================================================================
 echo "             Checking integrations and backends"
 echo "==============================================================================================="
 if [[ -n ${BACKEND=} ]]; then
-    check_db_backend 20
+    check_environment::check_db_backend 20
     echo "-----------------------------------------------------------------------------------------------"
 fi
-check_integration kerberos "nc -zvv kerberos 88" 30
-check_integration mongo "nc -zvv mongo 27017" 20
-check_integration redis "nc -zvv redis 6379" 20
-check_integration rabbitmq "nc -zvv rabbitmq 5672" 20
-check_integration cassandra "nc -zvv cassandra 9042" 20
-check_integration openldap "nc -zvv openldap 389" 20
-check_integration presto "nc -zvv presto 8080" 40
+check_environment::check_integration kerberos "nc -zvv kerberos 88" 30
+check_environment::check_integration mongo "nc -zvv mongo 27017" 20
+check_environment::check_integration redis "nc -zvv redis 6379" 20
+check_environment::check_integration rabbitmq "nc -zvv rabbitmq 5672" 20
+check_environment::check_integration cassandra "nc -zvv cassandra 9042" 20
+check_environment::check_integration openldap "nc -zvv openldap 389" 20
+check_environment::check_integration presto "nc -zvv presto 8080" 40
 echo "-----------------------------------------------------------------------------------------------"
 
 if [[ ${EXIT_CODE} != 0 ]]; then
