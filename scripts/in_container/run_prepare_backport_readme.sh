@@ -20,7 +20,7 @@
 
 OUT_FILE_PRINTED_ON_ERROR=$(mktemp)
 
-add_trap "in_container_fix_ownership" EXIT HUP INT TERM
+container_utils::add_trap "container_utils::in_container_fix_ownership" EXIT HUP INT TERM
 
 cd "${AIRFLOW_SOURCES}" || exit 1
 

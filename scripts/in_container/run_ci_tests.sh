@@ -59,7 +59,7 @@ else
 fi
 
 if [[ ${CI:=} == "true" ]]; then
-    dump_airflow_logs
+    container_utils::dump_airflow_logs
 fi
 
 exit "${RES}"

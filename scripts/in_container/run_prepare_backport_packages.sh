@@ -20,7 +20,7 @@
 
 LIST_OF_DIRS_FILE=$(mktemp)
 
-add_trap "in_container_fix_ownership" EXIT HUP INT TERM
+container_utils::add_trap "container_utils::in_container_fix_ownership" EXIT HUP INT TERM
 cd "${AIRFLOW_SOURCES}/airflow/providers" || exit 1
 
 find . -type d | sed 's/.\///; s/\//\./g' | grep -E 'hooks|operators|sensors|secrets' \
